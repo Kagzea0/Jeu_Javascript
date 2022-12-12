@@ -10,12 +10,12 @@ window.onload = function(){
 	var portal = new Image();
 	var coin = new Image();
 	// Chargement de l'image
-	fond.src = 'Images/decor.png';    
-	perso.src = 'Images/mario-spritesheet.png';// Path par rapport au document HTML, pas par rapport au document JS
-	fond2.src = 'Images/fond2.jpg';    
+	fond.src = 'decor.png';    
+	perso.src = 'mario-spritesheet.png';// Path par rapport au document HTML, pas par rapport au document JS
+	fond2.src = 'fond2.jpg';    
 	
-	coin.src = 'Images/coin.png';
-	portal.src = 'Images/portal.png';
+	coin.src = 'coin.png';
+	portal.src = 'portal.png';
 	var pick = new Audio('Son/Son_piece.mp3');
 	
 	var portal2 = new Obstacle(10, 300, 50, 50);
