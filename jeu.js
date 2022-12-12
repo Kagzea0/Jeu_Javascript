@@ -16,7 +16,7 @@ window.onload = function(){
 	
 	coin.src = 'Images/coin.png';
 	portal.src = 'Images/portal.png';
-	var pick = new Audio('son/pick.mp3');
+	var pick = new Audio('Son/Son_piece.mp3');
 	
 	var portal2 = new Obstacle(10, 300, 50, 50);
 	var coin2 = new Obstacle(400, 300, 30, 30);
