@@ -112,6 +112,3 @@ window.onload = function(){
 	}
 	
 }	
-	
-
-
