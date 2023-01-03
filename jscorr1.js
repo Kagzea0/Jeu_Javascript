@@ -19,11 +19,11 @@ window.onload = function(){
 	secondPlan.src = 'SecondPlan.png';
 	arrierePlan.src = 'ArrierePlan.png';
 
-	var x = 100;
+	var x = 300;
 	var z1 = 0;
 	var z2 = 0;
 	var z3 = 0;
-	var coefDeZ = 2;
+	var coefDeZ = 2.5;
 	var y = 300; //(x,y) : position du perso par rapport à la map du fond
 
 	var s = 1; //inutilisé en l'occurrence, pour faire grandir/réduire le perso grâce à
@@ -67,8 +67,8 @@ window.onload = function(){
 
 		if (saut >= 0){
 			y =  200 + (saut-20)*(saut-20)/4;
-			saut = saut-1; //saut--
-			console.log(saut,y);
+			saut = saut-1; 
+			//x = x + 1; saute vers la droite
 		}
 
 		if (pas > 4){
@@ -84,6 +84,7 @@ window.onload = function(){
 		else if(z1>1300){
 			ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
 		}
+		else ctx.drawImage(arrierePlan,z1+2600,0,1300,400);
 
 		//mettre plusieurs fois ça pour allonger le décor
 
@@ -94,6 +95,7 @@ window.onload = function(){
 		else if(z2>1430){
 			ctx.drawImage(secondPlan,z2+1430,60,1430,400);
 		}
+		else ctx.drawImage(secondPlan,z2+2860,60,1430,400);
 
 		ctx.drawImage(premierPlan,z3,0,1820,400);
 		if(z3>0){
@@ -102,6 +104,7 @@ window.onload = function(){
 		else if(z3>1820){
 			ctx.drawImage(premierPlan,z3+1820,0,1820,400);
 		}
+		else ctx.drawImage(premierPlan,z3+3640,0,1820,400);
  
 		ctx.translate(x+16,y+32); 
 
