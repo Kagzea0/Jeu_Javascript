@@ -23,7 +23,7 @@ window.onload = function(){
 	var z1 = 0;
 	var z2 = 0;
 	var z3 = 0;
-	var coefDeZ = 2.5;
+	var coefDeZ = 1.5;
 	var y = 300; //(x,y) : position du perso par rapport à la map du fond
 
 	var s = 1; //inutilisé en l'occurrence, pour faire grandir/réduire le perso grâce à
@@ -45,7 +45,6 @@ window.onload = function(){
 	function boucle(){
 
 		if (clavier.droite){
-			x = x + 1;
 			pas++;
 			droite = true;
 			z1 = z1 - 2*coefDeZ;
@@ -54,7 +53,6 @@ window.onload = function(){
 		}
 
 		else if  (clavier.gauche){ 
-			x = x - 1;	
 			pas++;
 			droite = false;
 			z1 = z1 + 2*coefDeZ;
