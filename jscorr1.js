@@ -12,7 +12,7 @@ window.onload = function(){
 	var arrierePlan = new Image();
 
 	//Chargement des variables
-	perso.src="mario-spritesheet.png";
+	perso.src="yoshi-spritesheet.png";
 	coin.src = "coin.png";
 
 	premierPlan.src = "PremierPlan.png";
@@ -21,7 +21,9 @@ window.onload = function(){
 
 	var x = 100;
 	var z = 0;
-	var y = 30; //(x,y) : position du perso par rapport à la map du fond
+	var z2 = 0;
+	var z3 = 0;
+	var y = 300; //(x,y) : position du perso par rapport à la map du fond
 
 	var s = 1; //inutilisé en l'occurrence, pour faire grandir/réduire le perso grâce à
 	//un ctx.scale(s,s)
@@ -48,7 +50,7 @@ window.onload = function(){
 			z = z + 3;
 		}
 
-		else if(clavier.gauche){ 
+		else if  (clavier.gauche){ 
 			x = x - 3;	
 			pas--;
 			droite = false;
@@ -58,12 +60,12 @@ window.onload = function(){
 		if (clavier.haut && saut <=0)  //initialisation du saut
 		saut = 40; 
 
-		if (saut >=0){   
-			y = 320 -100 + (saut-20)*(saut-20)/4;
-			saut=saut-1; 
+		if (saut >= 0){
+			y = y - 100 + (saut-20)*(saut-20)/4;
+			saut=saut-1; //saut--
 		}
 
-		if (pas>7){
+		if (pas > 7){
 			pas = 0;
 		}
 
