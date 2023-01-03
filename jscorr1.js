@@ -75,35 +75,24 @@ window.onload = function(){
 
 		ctx.save();  
 
+		ctx.drawImage(arrierePlan,z1-2600,0,1300,400);
+		ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
 		ctx.drawImage(arrierePlan,z1,0,1300,400);
-		if(z1>0){
-			ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
-		}
-		else if(z1>1300){
-			ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
-		}
-		else ctx.drawImage(arrierePlan,z1+2600,0,1300,400);
+		ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
+		ctx.drawImage(arrierePlan,z1+2600,0,1300,400);
 
-		//mettre plusieurs fois ça pour allonger le décor
+		ctx.drawImage(secondPlan,z2-2860,160,1430,314);
+		ctx.drawImage(secondPlan,z2-1370,160,1430,314);
+		ctx.drawImage(secondPlan,z2,140,1430,314);
+		ctx.drawImage(secondPlan,z2+1370,160,1430,314);
+		ctx.drawImage(secondPlan,z2+2860,160,1430,314);
 
-		ctx.drawImage(secondPlan,z2,60,1430,300);
-		if(z2>0){
-			ctx.drawImage(secondPlan,z2-1430,60,1430,400);
-		}
-		else if(z2>1430){
-			ctx.drawImage(secondPlan,z2+1430,60,1430,400);
-		}
-		else ctx.drawImage(secondPlan,z2+2860,60,1430,400);
-
+		ctx.drawImage(premierPlan,z3-3640,0,1820,400);
+		ctx.drawImage(premierPlan,z3-1820,0,1820,400);
 		ctx.drawImage(premierPlan,z3,0,1820,400);
-		if(z3>0){
-			ctx.drawImage(premierPlan,z3-1820,0,1820,400);
-		}
-		else if(z3>1820){
-			ctx.drawImage(premierPlan,z3+1820,0,1820,400);
-		}
-		else ctx.drawImage(premierPlan,z3+3640,0,1820,400);
- 
+		ctx.drawImage(premierPlan,z3+1820,0,1820,400);
+		ctx.drawImage(premierPlan,z3+3640,0,1820,400);
+
 		ctx.translate(x+16,y+32); 
 
 		if (!droite)
