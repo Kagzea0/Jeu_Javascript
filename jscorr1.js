@@ -23,7 +23,7 @@ window.onload = function(){
 	var z1 = 0;
 	var z2 = 0;
 	var z3 = 0;
-	var coefDeZ = 1.5;
+	var coefDeZ = 2;
 	var y = 300; //(x,y) : position du perso par rapport à la map du fond
 
 	var s = 1; //inutilisé en l'occurrence, pour faire grandir/réduire le perso grâce à
@@ -75,23 +75,52 @@ window.onload = function(){
 
 		ctx.save();  
 
-		ctx.drawImage(arrierePlan,z1-2600,0,1300,400);
 		ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
 		ctx.drawImage(arrierePlan,z1,0,1300,400);
 		ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
-		ctx.drawImage(arrierePlan,z1+2600,0,1300,400);
 
-		ctx.drawImage(secondPlan,z2-2860,60,1430,314);
-		ctx.drawImage(secondPlan,z2-1370,60,1430,314);
+		if (z1>1300){
+			z1=0;
+		}
+		
+		if (z1<-1300){
+			z1=0;
+		}
+
+		// if (z1<1300){
+		// 	z1=0;
+		// }
+
+		ctx.drawImage(secondPlan,z2-1430,60,1430,314);
 		ctx.drawImage(secondPlan,z2,60,1430,314);
-		ctx.drawImage(secondPlan,z2+1370,60,1430,314);
-		ctx.drawImage(secondPlan,z2+2860,60,1430,314);
+		ctx.drawImage(secondPlan,z2+1430,60,1430,314);
 
-		ctx.drawImage(premierPlan,z3-3640,0,1820,400);
+		if (z2>1430){
+			z2=0;
+		}
+
+		if (z2<-1430){
+			z2=0;
+		}
+
+		// if (z2<1430){
+		// 	z2=0;
+		// }
+
 		ctx.drawImage(premierPlan,z3-1820,0,1820,400);
 		ctx.drawImage(premierPlan,z3,0,1820,400);
 		ctx.drawImage(premierPlan,z3+1820,0,1820,400);
-		ctx.drawImage(premierPlan,z3+3640,0,1820,400);
+		
+		if (z3>1820){
+			z3=0;
+		}
+		if (z3<-1820){
+			z3=0;
+		}
+		
+		// if (z3<1820){
+		// 	z3=0;
+		// }
 
 		ctx.translate(x+16,y+32); 
 
