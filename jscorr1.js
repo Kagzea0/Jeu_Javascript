@@ -81,11 +81,11 @@ window.onload = function(){
 		ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
 		ctx.drawImage(arrierePlan,z1+2600,0,1300,400);
 
-		ctx.drawImage(secondPlan,z2-2860,160,1430,314);
-		ctx.drawImage(secondPlan,z2-1370,160,1430,314);
-		ctx.drawImage(secondPlan,z2,140,1430,314);
-		ctx.drawImage(secondPlan,z2+1370,160,1430,314);
-		ctx.drawImage(secondPlan,z2+2860,160,1430,314);
+		ctx.drawImage(secondPlan,z2-2860,60,1430,314);
+		ctx.drawImage(secondPlan,z2-1370,60,1430,314);
+		ctx.drawImage(secondPlan,z2,60,1430,314);
+		ctx.drawImage(secondPlan,z2+1370,60,1430,314);
+		ctx.drawImage(secondPlan,z2+2860,60,1430,314);
 
 		ctx.drawImage(premierPlan,z3-3640,0,1820,400);
 		ctx.drawImage(premierPlan,z3-1820,0,1820,400);
