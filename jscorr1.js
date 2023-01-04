@@ -5,15 +5,17 @@ window.onload = function(){
 
 	//Création des appels des variables des fichiers externes
 	var perso = new Image();
-	var coin = new Image();
+	var perso_piece = new Image();
+	var perso_obstacle = new Image();
 
 	var premierPlan = new Image();
 	var secondPlan = new Image();
 	var arrierePlan = new Image();
 
 	//Chargement des variables
-	perso.src = "yoshi_spritesheet.png";
-	coin.src = "coin.png";
+	perso.src = "yoshi_marche.png";
+	perso_piece.src = "yoshi_piece.png";
+	perso_obstacle.src = "yoshi_obstacle.png";
 
 	premierPlan.src = "PremierPlan.png";
 	secondPlan.src = 'SecondPlan.png';
@@ -72,6 +74,10 @@ window.onload = function(){
 		if (pas > 4){
 			pas = 0;
 		}
+		
+		if (clavier.bas){
+			ctx.drawImage(perso_obstacle,pas*36,0,36,31,-16,-32,32,64)
+		}
 
 		ctx.save();  
 
@@ -117,10 +123,6 @@ window.onload = function(){
 		if (z3<-1820){
 			z3=0;
 		}
-		
-		// if (z3<1820){
-		// 	z3=0;
-		// }
 
 		ctx.translate(x+16,y+32); 
 
