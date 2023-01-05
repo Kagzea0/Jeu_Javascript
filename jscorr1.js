@@ -6,6 +6,7 @@ window.onload = function(){
 	//Création des appels des variables des fichiers externes
 	var perso = new Image();
 	var perso_piece = new Image();
+	var piece = new Image();
 	var perso_obstacle = new Image();
 
 	var premierPlan = new Image();
@@ -15,6 +16,7 @@ window.onload = function(){
 	//Chargement des variables
 	perso.src = "yoshi_marche.png";
 	perso_piece.src = "yoshi_piece.png";
+	piece.src = "coin.png";
 	perso_obstacle.src = "yoshi_obstacle.png";
 
 	premierPlan.src = "PremierPlan.png";
@@ -33,7 +35,9 @@ window.onload = function(){
 
 	var compt = 0;
 	var saut = 0;
-	var pas = 0 ;
+	var pas1 = 0 ;
+	var pas2 = 0 ;
+	var pas3 = 0 ;
 	
 	var droite = true;
 	var pris = false;
@@ -47,7 +51,7 @@ window.onload = function(){
 	function boucle(){
 
 		if (clavier.droite){
-			pas++;
+			pas1++;
 			droite = true;
 			z1 = z1 - 2*coefDeZ;
 			z2 = z2 - 4*coefDeZ;
@@ -55,7 +59,7 @@ window.onload = function(){
 		}
 
 		else if  (clavier.gauche){ 
-			pas++;
+			pas1++;
 			droite = false;
 			z1 = z1 + 2*coefDeZ;
 			z2 = z2 + 4*coefDeZ;
@@ -71,12 +75,20 @@ window.onload = function(){
 			//x = x + 1; saute vers la droite
 		}
 
-		if (pas > 4){
-			pas = 0;
+		if (pas1 > 4){
+			pas1 = 0;
 		}
-		
-		if (clavier.bas){
-			ctx.drawImage(perso_obstacle,pas*36,0,36,31,-16,-32,32,64)
+
+		if (pas2 > 2){
+			pas2 = 0;
+		}
+
+		if (pas3 > 4){
+			pas3 = 0;
+		}
+
+		for (let x = 0; i < 9; i++){
+			//mettre 
 		}
 
 		ctx.save();  
@@ -93,10 +105,6 @@ window.onload = function(){
 			z1=0;
 		}
 
-		// if (z1<1300){
-		// 	z1=0;
-		// }
-
 		ctx.drawImage(secondPlan,z2-1430,60,1430,314);
 		ctx.drawImage(secondPlan,z2,60,1430,314);
 		ctx.drawImage(secondPlan,z2+1430,60,1430,314);
@@ -108,10 +116,6 @@ window.onload = function(){
 		if (z2<-1430){
 			z2=0;
 		}
-
-		// if (z2<1430){
-		// 	z2=0;
-		// }
 
 		ctx.drawImage(premierPlan,z3-1820,0,1820,400);
 		ctx.drawImage(premierPlan,z3,0,1820,400);
@@ -130,8 +134,13 @@ window.onload = function(){
 			ctx.scale(-1,1);
 		else
 		ctx.scale(1,1);
-		
-		ctx.drawImage(perso,pas*27,0,27,42,-16,-32,32,64);
+
+		if (clavier.bas){
+			ctx.drawImage(perso_obstacle,pas2*36,0,36,31,-16,-10,48,48);
+		}
+		else {
+			ctx.drawImage(perso,pas1*27,0,27,42,-16,-32,32,64);
+		}
 
 		ctx.restore();
 	
