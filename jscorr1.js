@@ -8,6 +8,8 @@ window.onload = function(){
 	var perso_piece = new Image();
 	var piece = new Image();
 	var perso_obstacle = new Image();
+	var note = new Image();
+	var obstacle = new Image();
 
 	var premierPlan = new Image();
 	var secondPlan = new Image();
@@ -23,6 +25,10 @@ window.onload = function(){
 	secondPlan.src = 'SecondPlan.png';
 	arrierePlan.src = 'ArrierePlan.png';
 
+	note.src = "note.png";
+	obstacle.src = "obstacle.png";
+
+	a = 1;
 	var x = 300;
 	var z1 = 0;
 	var z2 = 0;
@@ -33,16 +39,16 @@ window.onload = function(){
 	var s = 1; //inutilisé en l'occurrence, pour faire grandir/réduire le perso grâce à
 	//un ctx.scale(s,s)
 
-	var compt = 0;
+	var compt_note = 0;
+	var note_prise = false;
 	var saut = 0;
 	var pas1 = 0 ;
 	var pas2 = 0 ;
 	var pas3 = 0 ;
 	
 	var droite = true;
-	var pris = false;
-	var telep = false;
-	var transfo = false;
+	
+	var note2 = new Obstacle(z3+400*a,320,30,44);
 
 	premierPlan.onload = function(){
 		setInterval(boucle, 20); //framerate : 1000/20 soit 50 images par s.
@@ -87,9 +93,9 @@ window.onload = function(){
 			pas3 = 0;
 		}
 
-		for (let x = 0; i < 9; i++){
-			//mettre 
-		}
+		// for (let a = 0; i < 9; i++){
+		// 	mettre 
+		// }
 
 		ctx.save();  
 
@@ -128,6 +134,18 @@ window.onload = function(){
 			z3=0;
 		}
 
+		ctx.drawImage(obstacle,300,200,80,20);
+
+		if (note_prise == false){
+			ctx.drawImage(note,z3+400*a,320,30,44);
+		}
+
+		if (z3>=285 && z3<=315 && y>=285 && y<=315 && note_prise==false){
+			note_prise = true;
+			//son_note.play(); 
+			//mettre le son de récup de note
+		}
+
 		ctx.translate(x+16,y+32); 
 
 		if (!droite)
@@ -147,3 +165,40 @@ window.onload = function(){
 	}
 
 }
+
+/*Contraintes du jeu (2022/2023)
+Vous devez créer un jeu en vous appuyant sur ce qui a été vu. Une correction vous est remise. 
+Votre jeu devra être vrendu samedi 7 janvier 2023 au plus tard et respecter les contraintes 
+suivantes :
+
+1. Le jeu doit être absolument basé sur ce qui a été vu en cours, je dois reconnaître la 
+structure de ce qui vous a été donné (setInterval, fonction boucle, ....).
+
+2. Le jeu ne doit pas se passer dans le monde de Mario : il faudra changer de fond et de 
+personnage ! Il faut utiliser les fonds faits avec M. Clech. Il doit donc y avoir plusieurs 
+couches de fond qui glissent à des vitesses différentes. Il faut utiliser une spritesheet. 
+Vous pouvez récupérer des images sur internet, vous n’êtes pas obligés de les créer. 
+Attention, certaines spritesheets disponibles sur internet sont mal conçues et poseront
+problèmes (les vignettes doivent être dans une grille avec des cases qui ont toutes la même 
+largeur et même hauteur).
+
+3. Votre jeu doit être hébergé sur o2switch (ou ailleurs d’ailleurs si vous avez un autre 
+hébergeur). Il faut rendre dans l’espace que je vais créer sur moodle un rapport pdf d’une 
+page ou deux expliquant de façon très générale ce que vous avez réussi à faire et pas réussi 
+à faire et dans lequel vous faites le bilan de votre travail. Il faut donner le lien où 
+tester le jeu.
+
+4. Il faudra utiliser des items que l’on peut prendre, et qui doivent avoir une incidence 
+sur le jeu : donner un pouvoir au personnage, constituer une partie d’un ensemble d’éléments 
+à rassembler dans le bon ordre, déclencher un son, changer une couleur ou un fond, etc... 
+Ces items doivent être soit des notes de musique soit les quatre éléments (terre, air, feu, 
+eau). Notez d’ailleurs que si vous le souhaitez votre jeu peut constituer une expérience
+artistique plus qu’un jeu avec un véritable but.
+
+Barême : non respect de la contrainte 1 : 
+Originalité sur 6
+Jouabilité/fonctionnement sur 6 (est-ce que le jeu est fluide, ne bloque pas à certains 
+endroits, est-ce qu’il est intéressant ...), 
+Avancement technique sur 8 (plus votre jeu met en oeuvre des concepts avancés plus la note 
+est proche de 8).
+*/
