@@ -6,8 +6,8 @@ window.onload = function(){
 	//Création des appels des variables des fichiers externes
 	var perso = new Image();
 	var perso_piece = new Image();
-	var piece = new Image();
 	var perso_obstacle = new Image();
+
 	var note = new Image();
 	var obstacle = new Image();
 
@@ -18,15 +18,14 @@ window.onload = function(){
 	//Chargement des variables
 	perso.src = "yoshi_marche.png";
 	perso_piece.src = "yoshi_piece.png";
-	piece.src = "coin.png";
 	perso_obstacle.src = "yoshi_obstacle.png";
+
+	note.src = "note.png";
+	obstacle.src = "obstacle.png";
 
 	premierPlan.src = "PremierPlan.png";
 	secondPlan.src = 'SecondPlan.png';
 	arrierePlan.src = 'ArrierePlan.png';
-
-	note.src = "note.png";
-	obstacle.src = "obstacle.png";
 
 	a = 1;
 	var x = 300;
@@ -35,9 +34,6 @@ window.onload = function(){
 	var z3 = 0;
 	var coefDeZ = 2;
 	var y = 300; //(x,y) : position du perso par rapport à la map du fond
-
-	var s = 1; //inutilisé en l'occurrence, pour faire grandir/réduire le perso grâce à
-	//un ctx.scale(s,s)
 
 	var compt_note = 0;
 	var note_prise = false;
@@ -48,7 +44,7 @@ window.onload = function(){
 	
 	var droite = true;
 	
-	var note2 = new Obstacle(z3+400*a,320,30,44);
+	var note2 = new Obstacle(z3+400*a,320,30,44); //Sert à faire une collision avec le perso
 
 	premierPlan.onload = function(){
 		setInterval(boucle, 20); //framerate : 1000/20 soit 50 images par s.
@@ -64,7 +60,7 @@ window.onload = function(){
 			z3 = z3 - 6*coefDeZ;
 		}
 
-		else if  (clavier.gauche){ 
+		else if (clavier.gauche){ 
 			pas1++;
 			droite = false;
 			z1 = z1 + 2*coefDeZ;
@@ -81,6 +77,7 @@ window.onload = function(){
 			//x = x + 1; saute vers la droite
 		}
 
+		//Les différents pas pour les spritessheets
 		if (pas1 > 4){
 			pas1 = 0;
 		}
@@ -93,12 +90,9 @@ window.onload = function(){
 			pas3 = 0;
 		}
 
-		// for (let a = 0; i < 9; i++){
-		// 	mettre 
-		// }
-
-		ctx.save();  
-
+		ctx.save();  		
+		
+		//Mise en place de l'arrière plan ainsi que son parallaxe
 		ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
 		ctx.drawImage(arrierePlan,z1,0,1300,400);
 		ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
@@ -111,6 +105,7 @@ window.onload = function(){
 			z1=0;
 		}
 
+		//Mise en place du deuxième plan ainsi que son parallaxe
 		ctx.drawImage(secondPlan,z2-1430,60,1430,314);
 		ctx.drawImage(secondPlan,z2,60,1430,314);
 		ctx.drawImage(secondPlan,z2+1430,60,1430,314);
@@ -123,18 +118,48 @@ window.onload = function(){
 			z2=0;
 		}
 
+		//Mise en place du premier plan ainsi que son parallaxe
 		ctx.drawImage(premierPlan,z3-1820,0,1820,400);
 		ctx.drawImage(premierPlan,z3,0,1820,400);
 		ctx.drawImage(premierPlan,z3+1820,0,1820,400);
-		
+
 		if (z3>1820){
 			z3=0;
 		}
+
 		if (z3<-1820){
 			z3=0;
 		}
 
-		ctx.drawImage(obstacle,300,200,80,20);
+		//Boucle qui permet de mettre différents obstacles en +z3
+		for (let i = 1; i < 9; i++){
+
+			if (i%2==0){
+				ctx.drawImage(obstacle,z3+300*i,300,80,20);
+			}
+			else if (i%3==0){
+				ctx.drawImage(obstacle,z3+300*i,200,80,20);
+			}
+			else if (i%5==0){
+				ctx.drawImage(obstacle,z3+300*i,100,80,20);
+			}
+		}
+
+		//Boucle qui permet de mettre différents obstacles en -z3
+		for (let i = 1; i < 9; i++){
+
+			if (i%2==0){
+				ctx.drawImage(obstacle,z3-300*i,300,80,20);
+			}
+			else if (i%3==0){
+				ctx.drawImage(obstacle,z3-300*i,200,80,20);
+			}
+			else if (i%5==0){
+				ctx.drawImage(obstacle,z3-300*i,100,80,20);
+			}
+		}
+
+		//veut faire apparaitre/disparaitre la note de musique et incrémenter le compteur de notes
 
 		if (note_prise == false){
 			ctx.drawImage(note,z3+400*a,320,30,44);
@@ -142,6 +167,7 @@ window.onload = function(){
 
 		if (z3+400*a-15>=x && z3+400*a+15<=x && y>=285 && y<=315 && note_prise==false){
 			note_prise = true;
+			compt_note++;
 			//son_note.play(); 
 			//mettre le son de récup de note
 		}
@@ -160,8 +186,16 @@ window.onload = function(){
 			ctx.drawImage(perso,pas1*27,0,27,42,-16,-32,32,64);
 		}
 
+		if (clavier.bas == true){
+			clavier.haut = false;
+		}
+
 		ctx.restore();
 	
+	}
+
+	function timer(){
+		setTimeout(boucle,1500);
 	}
 
 }
