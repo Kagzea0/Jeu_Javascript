@@ -140,7 +140,7 @@ window.onload = function(){
 			ctx.drawImage(note,z3+400*a,320,30,44);
 		}
 
-		if (z3>=285 && z3<=315 && y>=285 && y<=315 && note_prise==false){
+		if (z3+400*a-15>=x && z3+400*a+15<=x && y>=285 && y<=315 && note_prise==false){
 			note_prise = true;
 			//son_note.play(); 
 			//mettre le son de récup de note
