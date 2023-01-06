@@ -161,15 +161,17 @@ window.onload = function(){
 
 		//veut faire apparaitre/disparaitre la note de musique et incrémenter le compteur de notes
 
-		if (note_prise == false){
-			ctx.drawImage(note,z3+400*a,320,30,44);
-		}
-
-		if (z3+400*a-15>=x && z3+400*a+15<=x && y>=285 && y<=315 && note_prise==false){
+		if (z3+385>=x && z3+415<=x && y>=310 && y<=340 && note_prise==false){
 			note_prise = true;
 			compt_note++;
 			//son_note.play(); 
 			//mettre le son de récup de note
+		}
+
+		ctx.strokeRect(z3+385,310,30,44)
+
+		if (note_prise == false){
+			ctx.drawImage(note,z3+385,310,30,44);
 		}
 
 		ctx.translate(x+16,y+32); 
