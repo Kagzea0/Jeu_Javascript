@@ -5,27 +5,14 @@ window.onload = function(){
 
 	//Création des appels des variables des fichiers externes
 	var perso = new Image();
-	var perso_piece = new Image();
+	var perso_note = new Image();
 	var perso_obstacle = new Image();
 
 	var note = new Image();
-	var obstacle = new Image();
 
 	var premierPlan = new Image();
 	var secondPlan = new Image();
 	var arrierePlan = new Image();
-
-	//Chargement des variables
-	perso.src = "yoshi_marche.png";
-	perso_piece.src = "yoshi_piece.png";
-	perso_obstacle.src = "yoshi_obstacle.png";
-
-	note.src = "note.png";
-	obstacle.src = "obstacle.png";
-
-	premierPlan.src = "PremierPlan.png";
-	secondPlan.src = 'SecondPlan.png';
-	arrierePlan.src = 'ArrierePlan.png';
 
 	a = 1;
 	var x = 300;
@@ -33,7 +20,38 @@ window.onload = function(){
 	var z2 = 0;
 	var z3 = 0;
 	var coefDeZ = 2;
-	var y = 300; //(x,y) : position du perso par rapport à la map du fond
+	var y = 300; //(x,y) : position du perso par rapport à la map du fond 
+
+	var sol = 300;
+	
+	var obstacle0 = new Image();
+	var obstacle00 = new Obstacle(z3+300,200*1.35,80,20);
+	var obstacle1 = new Image();
+	var obstacle2 = new Image();
+	var obstacle3 = new Image();
+	var obstacle4 = new Image();
+	var obstacle5 = new Image();
+	var obstacle6 = new Image();
+	var obstacle7 = new Image();
+
+	//Chargement des variables
+	perso.src = "yoshi_marche.png";
+	perso_note.src = "yoshi_note.png";
+	perso_obstacle.src = "yoshi_obstacle.png";
+
+	note.src = "note.png";
+	obstacle0.src = "obstacle.png";
+	obstacle1.src = "obstacle.png";
+	obstacle2.src = "obstacle.png";
+	obstacle3.src = "obstacle.png";
+	obstacle4.src = "obstacle.png";
+	obstacle5.src = "obstacle.png";
+	obstacle6.src = "obstacle.png";
+	obstacle7.src = "obstacle.png";
+
+	premierPlan.src = "PremierPlan.png";
+	secondPlan.src = 'SecondPlan.png';
+	arrierePlan.src = 'ArrierePlan.png';
 
 	var compt_note = 0;
 	var note_prise = false;
@@ -41,40 +59,71 @@ window.onload = function(){
 	var pas1 = 0 ;
 	var pas2 = 0 ;
 	var pas3 = 0 ;
+
+	var colle_x = false;
 	
 	var droite = true;
 	
-	var note2 = new Obstacle(z3+400*a,320,30,44); //Sert à faire une collision avec le perso
-
 	premierPlan.onload = function(){
 		setInterval(boucle, 20); //framerate : 1000/20 soit 50 images par s.
 	}
 
 	function boucle(){
-
+		
+		obstacle00.x = z3+300;
+		
 		if (clavier.droite){
-			pas1++;
 			droite = true;
-			z1 = z1 - 2*coefDeZ;
-			z2 = z2 - 4*coefDeZ;
-			z3 = z3 - 6*coefDeZ;
+			if (!obstacle00.collision(x,y,32,64)){
+				pas1++;
+				z1 = z1 - 2*coefDeZ;
+				z2 = z2 - 4*coefDeZ;
+				z3 = z3 - 6*coefDeZ;
+				colle_x = true;
+			}
+			else{
+				console.log('droite');
+				colle_x = false;
+			}
 		}
 
 		else if (clavier.gauche){ 
-			pas1++;
 			droite = false;
-			z1 = z1 + 2*coefDeZ;
-			z2 = z2 + 4*coefDeZ;
-			z3 = z3 + 6*coefDeZ;
+			if (!obstacle00.collision(x,y,32,64)){
+				pas1++;
+				z1 = z1 + 2*coefDeZ;
+				z2 = z2 + 4*coefDeZ;
+				z3 = z3 + 6*coefDeZ;
+				colle_x = true;
+			}
+			else{
+				console.log('gauche');
+				colle_x = false;
+			}
 		}
 
 		if (clavier.haut && saut <=0)  //initialisation du saut
 		saut = 40; 
+		
 
 		if (saut >= 0){
-			y =  200 + (saut-20)*(saut-20)/4;
-			saut = saut-1; 
+			y =  sol + (saut-20)*(saut-20)/4-100;
+			if (obstacle00.collision(x,y,32,64) && colle_x == false){
+				console.log('saut');
+				if(y+64<=270){
+					sol = 270;
+				}
+				else{
+					saut = 39 - saut;
+				}
+			}
+			else{
+				saut = saut - 1;}
 			//x = x + 1; saute vers la droite
+		}
+
+		if (perso.x < z3-0 && perso.x > z3+80 && y < 265 && y > 275 && saut > 0){
+			y=270;
 		}
 
 		//Les différents pas pour les spritessheets
@@ -129,39 +178,32 @@ window.onload = function(){
 
 		if (z3<-1820){
 			z3=0;
-		}
+		}ctx.strokeRect(z3+300,200*1.35,80,20);
 
-		//Boucle qui permet de mettre différents obstacles en +z3
-		for (let i = 1; i < 9; i++){
+		//Permet de mettre différents obstacles et les collisions en -z3
+		ctx.drawImage(obstacle0,z3-0,200*1.35,80,20);
+		
 
-			if (i%2==0){
-				ctx.drawImage(obstacle,z3+300*i,300,80,20);
-			}
-			else if (i%3==0){
-				ctx.drawImage(obstacle,z3+300*i,200,80,20);
-			}
-			else if (i%5==0){
-				ctx.drawImage(obstacle,z3+300*i,100,80,20);
-			}
-		}
+		console.log(obstacle00.x)
 
-		//Boucle qui permet de mettre différents obstacles en -z3
-		for (let i = 1; i < 9; i++){
+		ctx.drawImage(obstacle1,z3-300,200*1.4,80,20);
+		ctx.drawImage(obstacle2,z3-600,200*1.6,80,20);
+		ctx.drawImage(obstacle3,z3-900,200*1.4,80,20);
+		ctx.drawImage(obstacle4,z3-1200,200*1.6,80,20);
+		ctx.drawImage(obstacle5,z3-1500,200*1.8,80,20);
+		ctx.drawImage(obstacle6,z3-1800,200*1.6,80,20);	
 
-			if (i%2==0){
-				ctx.drawImage(obstacle,z3-300*i,300,80,20);
-			}
-			else if (i%3==0){
-				ctx.drawImage(obstacle,z3-300*i,200,80,20);
-			}
-			else if (i%5==0){
-				ctx.drawImage(obstacle,z3-300*i,100,80,20);
-			}
-		}
+		//Permet de mettre différents obstacles en +z3
+		ctx.drawImage(obstacle2,z3+600,200*1.2,80,20);
+		ctx.drawImage(obstacle3,z3+900,200*1.4,80,20);
+		ctx.drawImage(obstacle4,z3+1200,200*1.6,80,20);
+		ctx.drawImage(obstacle5,z3+1500,200*1.8,80,20);
+		ctx.drawImage(obstacle6,z3+1800,200*1.6,80,20);
+		ctx.drawImage(obstacle7,z3+2100,200*1.4,80,20);
 
-		//veut faire apparaitre/disparaitre la note de musique et incrémenter le compteur de notes
+		//Fait apparaitre/disparaitre la note de musique et incrémente le compteur de notes
 
-		if (z3+385>=x && z3+415<=x && y>=310 && y<=340 && note_prise==false){
+		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note_prise==false){
 			note_prise = true;
 			compt_note++;
 			//son_note.play(); 
@@ -194,10 +236,6 @@ window.onload = function(){
 
 		ctx.restore();
 	
-	}
-
-	function timer(){
-		setTimeout(boucle,1500);
 	}
 
 }
