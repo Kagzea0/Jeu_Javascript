@@ -1,0 +1,20 @@
+@charset "ISO-8859-1";
+/* CSS Document */
+
+body {
+	background: #333;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #FFF;
+}
+
+#canvas_holder {
+	margin: 0 auto;
+    margin-top: 150px;
+	width: 800px;
+	height: 400px;
+	background: #FFF;
+}
+
+h1{
+    margin-left: 300px;
+}

@@ -35,23 +35,23 @@ window.onload = function(){
 	var obstacle7 = new Image();
 
 	//Chargement des variables
-	perso.src = "yoshi_marche.png";
-	perso_note.src = "yoshi_note.png";
-	perso_obstacle.src = "yoshi_obstacle.png";
+	perso.src = "Images/yoshi_marche.png";
+	perso_note.src = "Images/yoshi_note.png";
+	perso_obstacle.src = "Images/yoshi_obstacle.png";
 
-	note.src = "note.png";
-	obstacle0.src = "obstacle.png";
-	obstacle1.src = "obstacle.png";
-	obstacle2.src = "obstacle.png";
-	obstacle3.src = "obstacle.png";
-	obstacle4.src = "obstacle.png";
-	obstacle5.src = "obstacle.png";
-	obstacle6.src = "obstacle.png";
-	obstacle7.src = "obstacle.png";
+	note.src = "Images/note.png";
+	obstacle0.src = "Images/obstacle.png";
+	obstacle1.src = "Images/obstacle.png";
+	obstacle2.src = "Images/obstacle.png";
+	obstacle3.src = "Images/obstacle.png";
+	obstacle4.src = "Images/obstacle.png";
+	obstacle5.src = "Images/obstacle.png";
+	obstacle6.src = "Images/obstacle.png";
+	obstacle7.src = "Images/obstacle.png";
 
-	premierPlan.src = "PremierPlan.png";
-	secondPlan.src = 'SecondPlan.png';
-	arrierePlan.src = 'ArrierePlan.png';
+	premierPlan.src = "Images/PremierPlan.png";
+	secondPlan.src = "Images/SecondPlan.png";
+	arrierePlan.src = "Images/ArrierePlan.png";
 
 	var compt_note = 0;
 	var note_prise = false;
@@ -105,7 +105,6 @@ window.onload = function(){
 		if (clavier.haut && saut <=0)  //initialisation du saut
 		saut = 40; 
 		
-
 		if (saut >= 0){
 			y =  sol + (saut-20)*(saut-20)/4-100;
 			if (obstacle00.collision(x,y,32,64) && colle_x == false){
@@ -178,7 +177,9 @@ window.onload = function(){
 
 		if (z3<-1820){
 			z3=0;
-		}ctx.strokeRect(z3+300,200*1.35,80,20);
+		}
+		
+		ctx.strokeRect(z3+300,200*1.35,80,20);
 
 		//Permet de mettre différents obstacles et les collisions en -z3
 		ctx.drawImage(obstacle0,z3-0,200*1.35,80,20);
