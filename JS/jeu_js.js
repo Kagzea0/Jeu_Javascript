@@ -3,25 +3,9 @@ window.onload = function(){
 	var ctx = canvas.getContext("2d");
 	var clavier = new Clavier();
 
-	//Création des variables pour les différentes positions du personnage
+	//Création des appels des variables des pour les différentes positions du jeu
 	var perso = new Image();
-	var perso_obstacle = new Image();
-
-	//Création des variables pour les différents plan du jeu
-	var premierPlan = new Image();
-	var secondPlan = new Image();
-	var arrierePlan = new Image();
-
-	//Création des variables pour les obstacles du jeu
-	var obstacle0 = new Image();
-	var obstacle00 = new Obstacle(z3+300,200*1.35,30,100);
-	var obstacle1 = new Image();
-	var obstacle2 = new Image();
-	var obstacle3 = new Image();
-	var obstacle4 = new Image();
-	var obstacle5 = new Image();
-	var obstacle6 = new Image();
-	var obstacle7 = new Image();
+	var perso_note = new Image();
 
 	//Créations des variables notes
 	var note0 = new Image();
@@ -35,27 +19,20 @@ window.onload = function(){
 	var note8 = new Image();
 	var note9 = new Image();
 
-	//Créations des obstacles du jeu
-	var obstacle00 = new Obstacle(/*mettre des coords*/);
+	//Création des variables pour les différents plan du jeu
+	var premierPlan = new Image();
+	var secondPlan = new Image();
+	var arrierePlan = new Image();
 
 	//Appel des fichiers correspondant aux noms des variables
 	perso.src = "Images/yoshi_marche.png";
-	perso_obstacle.src = "Images/yoshi_obstacle.png";
-
+	perso_note.src = "Images/yoshi_note.png";
+	
 	premierPlan.src = "Images/PremierPlan.png";
-	secondPlan.src = 'Images/SecondPlan.png';
-	arrierePlan.src = 'Images/ArrierePlan.png';
+	secondPlan.src = "Images/SecondPlan.png";
+	arrierePlan.src = "Images/ArrierePlan.png";
 
-	obstacle0.src = "Images/web.png";
-	obstacle1.src = "Images/web.png";
-	obstacle2.src = "Images/web.png";
-	obstacle3.src = "Images/web.png";
-	obstacle4.src = "Images/web.png";
-	obstacle5.src = "Images/web.png";
-	obstacle6.src = "Images/web.png";
-	obstacle7.src = "Images/web.png";
-
-	note0.src = "Images/note.png"
+	note0.src = "Images/note.png";
 	note1.src = "Images/note.png"
 	note2.src = "Images/note.png"
 	note3.src = "Images/note.png"
@@ -69,15 +46,19 @@ window.onload = function(){
 	//Créations de variables utiles au jeu
 	var compteur_note = 0;
 	var saut = 0;
+
+	a = 1;
 	var x = 200;
 	var z1 = 0;
 	var z2 = 0;
 	var z3 = 0;
-	var droite = true;
 	var coefDeZ = 2;
 	var y = 300; //(x,y) : position du perso par rapport à la map du fond 
-	var sol = y;
 
+	var sol = y;
+	
+	var droite = true;
+	
 	//Pas pour régler la vitesse des 3 plans en parallaxe
 	var pas1 = 0 ;
 	var pas2 = 0 ;
@@ -93,43 +74,27 @@ window.onload = function(){
 	var note7_prise = false;
 	var note8_prise = false;
 	var note9_prise = false;
-
+	
 	premierPlan.onload = function(){
-		setInterval(boucle, 20); //framerate : 1000/20 soit 50 images par seconde
+		setInterval(boucle, 20); //framerate : 1000/20 soit 50 images par s.
 	}
 
 	function boucle(){
-
-		obstacle00.x = z3+300;
 		
 		if (clavier.droite){
 			droite = true;
-			if (!obstacle00.collision(x,sol,32,64)){
-				pas1++;
-				z1 = z1 - 2*coefDeZ;
-				z2 = z2 - 4*coefDeZ;
-				z3 = z3 - 6*coefDeZ;
-				colle_x = true;
-			}
-			else{
-				console.log('droite');
-				colle_x = false;
-			}
+			pas1++;
+			z1 = z1 - 2*coefDeZ;
+			z2 = z2 - 4*coefDeZ;
+			z3 = z3 - 6*coefDeZ;
 		}
 
 		else if (clavier.gauche){ 
 			droite = false;
-			if (!obstacle00.collision(x,sol,32,64)){
-				pas1++;
-				z1 = z1 + 2*coefDeZ;
-				z2 = z2 + 4*coefDeZ;
-				z3 = z3 + 6*coefDeZ;
-				colle_x = true;
-			}
-			else{
-				console.log('gauche');
-				colle_x = false;
-			}
+			pas1++;
+			z1 = z1 + 2*coefDeZ;
+			z2 = z2 + 4*coefDeZ;
+			z3 = z3 + 6*coefDeZ;
 		}
 
 		if (clavier.haut && saut <=0)  //initialisation du saut
@@ -143,7 +108,7 @@ window.onload = function(){
 		if (perso.x < z3-0 && perso.x > z3+80 && y < 265 && y > 275 && saut > 0){
 			sol=270;
 		}
-		
+
 		//Les différents pas pour les spritessheets
 		if (pas1 > 4){
 			pas1 = 0;
@@ -153,7 +118,7 @@ window.onload = function(){
 			pas2 = 0;
 		}
 
-		ctx.save();  	
+		ctx.save();  		
 		
 		//Mise en place de l'arrière plan ainsi que son parallaxe
 		ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
@@ -192,27 +157,9 @@ window.onload = function(){
 
 		if (z3<-1820){
 			z3=0;
-		}	
-
-		//Permet de mettre différents obstacles et les collisions en -z3
-		ctx.drawImage(obstacle0,z3+300,200*1.55,48,48);
-
-		if (x == obstacle0.x + obstacle0.width + 2){
-				clavier.droite = false;
-				x = 150;
-			}
-
-		if (x == obstacle0.x - 2){
-				clavier.droite = false;
-			}
-		
-		if (perso.y == obstacle0.y && saut > 0){
-			sol = y - obstacle0.height;
 		}
 
-		console.log(obstacle00.x)		
-		
-		//Fait apparaitre/disparaitre les notes de musique et incrémente le compteur de notes
+		//Fait apparaitre/disparaitre la note de musique et incrémente le compteur de notes
 
 		//NOTE 0
 		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note0_prise==false){
@@ -309,3 +256,40 @@ window.onload = function(){
 	}
 
 }
+
+/*Contraintes du jeu (2022/2023)
+Vous devez créer un jeu en vous appuyant sur ce qui a été vu. Une correction vous est remise. 
+Votre jeu devra être vrendu samedi 7 janvier 2023 au plus tard et respecter les contraintes 
+suivantes :
+
+1. Le jeu doit être absolument basé sur ce qui a été vu en cours, je dois reconnaître la 
+structure de ce qui vous a été donné (setInterval, fonction boucle, ....).
+
+2. Le jeu ne doit pas se passer dans le monde de Mario : il faudra changer de fond et de 
+personnage ! Il faut utiliser les fonds faits avec M. Clech. Il doit donc y avoir plusieurs 
+couches de fond qui glissent à des vitesses différentes. Il faut utiliser une spritesheet. 
+Vous pouvez récupérer des images sur internet, vous n’êtes pas obligés de les créer. 
+Attention, certaines spritesheets disponibles sur internet sont mal conçues et poseront
+problèmes (les vignettes doivent être dans une grille avec des cases qui ont toutes la même 
+largeur et même hauteur).
+
+3. Votre jeu doit être hébergé sur o2switch (ou ailleurs d’ailleurs si vous avez un autre 
+hébergeur). Il faut rendre dans l’espace que je vais créer sur moodle un rapport pdf d’une 
+page ou deux expliquant de façon très générale ce que vous avez réussi à faire et pas réussi 
+à faire et dans lequel vous faites le bilan de votre travail. Il faut donner le lien où 
+tester le jeu.
+
+4. Il faudra utiliser des items que l’on peut prendre, et qui doivent avoir une incidence 
+sur le jeu : donner un pouvoir au personnage, constituer une partie d’un ensemble d’éléments 
+à rassembler dans le bon ordre, déclencher un son, changer une couleur ou un fond, etc... 
+Ces items doivent être soit des notes de musique soit les quatre éléments (terre, air, feu, 
+eau). Notez d’ailleurs que si vous le souhaitez votre jeu peut constituer une expérience
+artistique plus qu’un jeu avec un véritable but.
+
+Barême : non respect de la contrainte 1 : 
+Originalité sur 6
+Jouabilité/fonctionnement sur 6 (est-ce que le jeu est fluide, ne bloque pas à certains 
+endroits, est-ce qu’il est intéressant ...), 
+Avancement technique sur 8 (plus votre jeu met en oeuvre des concepts avancés plus la note 
+est proche de 8).
+*/
