@@ -14,6 +14,7 @@ window.onload = function(){
 
 	//Création des variables pour les obstacles du jeu
 	var obstacle0 = new Image();
+	var obstacle00 = new Obstacle(z3+300,200*1.35,30,100);
 	var obstacle1 = new Image();
 	var obstacle2 = new Image();
 	var obstacle3 = new Image();
@@ -45,14 +46,14 @@ window.onload = function(){
 	secondPlan.src = 'Images/SecondPlan.png';
 	arrierePlan.src = 'Images/ArrierePlan.png';
 
-	// obstacle0.src = "obstacle.png";
-	// obstacle1.src = "obstacle.png";
-	// obstacle2.src = "obstacle.png";
-	// obstacle3.src = "obstacle.png";
-	// obstacle4.src = "obstacle.png";
-	// obstacle5.src = "obstacle.png";
-	// obstacle6.src = "obstacle.png";
-	// obstacle7.src = "obstacle.png";
+	obstacle0.src = "Images/web.png";
+	obstacle1.src = "Images/web.png";
+	obstacle2.src = "Images/web.png";
+	obstacle3.src = "Images/web.png";
+	obstacle4.src = "Images/web.png";
+	obstacle5.src = "Images/web.png";
+	obstacle6.src = "Images/web.png";
+	obstacle7.src = "Images/web.png";
 
 	note0.src = "Images/note.png"
 	note1.src = "Images/note.png"
@@ -68,13 +69,14 @@ window.onload = function(){
 	//Créations de variables utiles au jeu
 	var compteur_note = 0;
 	var saut = 0;
-	var x = 100;
+	var x = 200;
 	var z1 = 0;
 	var z2 = 0;
 	var z3 = 0;
 	var droite = true;
 	var coefDeZ = 2;
 	var y = 300; //(x,y) : position du perso par rapport à la map du fond 
+	var sol = y;
 
 	//Pas pour régler la vitesse des 3 plans en parallaxe
 	var pas1 = 0 ;
@@ -97,33 +99,49 @@ window.onload = function(){
 	}
 
 	function boucle(){
+
+		obstacle00.x = z3+300;
+		
 		if (clavier.droite){
 			droite = true;
-			pas1++;
-			z1 = z1 - 2*coefDeZ;
-			z2 = z2 - 4*coefDeZ;
-			z3 = z3 - 6*coefDeZ;
+			if (!obstacle00.collision(x,sol,32,64)){
+				pas1++;
+				z1 = z1 - 2*coefDeZ;
+				z2 = z2 - 4*coefDeZ;
+				z3 = z3 - 6*coefDeZ;
+				colle_x = true;
+			}
+			else{
+				console.log('droite');
+				colle_x = false;
+			}
 		}
 
 		else if (clavier.gauche){ 
 			droite = false;
-			pas1++;
-			z1 = z1 + 2*coefDeZ;
-			z2 = z2 + 4*coefDeZ;
-			z3 = z3 + 6*coefDeZ;
+			if (!obstacle00.collision(x,sol,32,64)){
+				pas1++;
+				z1 = z1 + 2*coefDeZ;
+				z2 = z2 + 4*coefDeZ;
+				z3 = z3 + 6*coefDeZ;
+				colle_x = true;
+			}
+			else{
+				console.log('gauche');
+				colle_x = false;
+			}
 		}
 
-		//console.log('gauche');
-		//console.log('droite');
-		//console.log('saut');
-
-		if (clavier.haut && saut <=0){  //initialisation du saut
-			saut = 40;
-		}
+		if (clavier.haut && saut <=0)  //initialisation du saut
+		saut = 40; 
 		
 		if (saut >= 0){
 			y =  300 + (saut-20)*(saut-20)/4-100;
 			saut = saut - 1;
+		}
+
+		if (perso.x < z3-0 && perso.x > z3+80 && y < 265 && y > 275 && saut > 0){
+			sol=270;
 		}
 		
 		//Les différents pas pour les spritessheets
@@ -175,6 +193,24 @@ window.onload = function(){
 		if (z3<-1820){
 			z3=0;
 		}	
+
+		//Permet de mettre différents obstacles et les collisions en -z3
+		ctx.drawImage(obstacle0,z3+300,200*1.55,48,48);
+
+		if (x == obstacle0.x + obstacle0.width + 2){
+				clavier.droite = false;
+				x = 150;
+			}
+
+		if (x == obstacle0.x - 2){
+				clavier.droite = false;
+			}
+		
+		if (perso.y == obstacle0.y && saut > 0){
+			sol = y - obstacle0.height;
+		}
+
+		console.log(obstacle00.x)		
 		
 		//Fait apparaitre/disparaitre les notes de musique et incrémente le compteur de notes
 
@@ -194,71 +230,79 @@ window.onload = function(){
 			/*son_note.play(); mettre le son de récup de note*/}
 		else if (note1_prise == false){ctx.drawImage(note1,z3+485,310,30,44);}
 
-		//NOTE 2
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note2_prise==false){
-			note2_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note2_prise == false){ctx.drawImage(note2,z3+385,310,30,44);}
+		// //NOTE 2
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note2_prise==false){
+		// 	note2_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note2_prise == false){ctx.drawImage(note2,z3+385,310,30,44);}
 
-		//NOTE 3
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note3_prise==false){
-			note3_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note3_prise == false){ctx.drawImage(note3,z3+385,310,30,44);}
+		// //NOTE 3
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note3_prise==false){
+		// 	note3_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note3_prise == false){ctx.drawImage(note3,z3+385,310,30,44);}
 
-		//NOTE 4
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note4_prise==false){
-			note4_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note4_prise == false){ctx.drawImage(note4,z3+385,310,30,44);}
+		// //NOTE 4
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note4_prise==false){
+		// 	note4_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note4_prise == false){ctx.drawImage(note4,z3+385,310,30,44);}
 
-		//NOTE 5
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note5_prise==false){
-			note5_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note5_prise == false){ctx.drawImage(note5,z3+385,310,30,44);}
+		// //NOTE 5
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note5_prise==false){
+		// 	note5_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note5_prise == false){ctx.drawImage(note5,z3+385,310,30,44);}
 
-		//NOTE 6
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note6_prise==false){
-			note6_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note6_prise == false){ctx.drawImage(note6,z3+385,310,30,44);}
+		// //NOTE 6
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note6_prise==false){
+		// 	note6_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note6_prise == false){ctx.drawImage(note6,z3+385,310,30,44);}
 
-		//NOTE7
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note7_prise==false){
-			note7_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note7_prise == false){ctx.drawImage(note7,z3+385,310,30,44);}
+		// //NOTE7
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note7_prise==false){
+		// 	note7_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note7_prise == false){ctx.drawImage(note7,z3+385,310,30,44);}
 
-		//NOTE 8
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note8_prise==false){
-			note8_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note8_prise == false){ctx.drawImage(note8,z3+385,310,30,44);}
+		// //NOTE 8
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note8_prise==false){
+		// 	note8_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note8_prise == false){ctx.drawImage(note8,z3+385,310,30,44);}
 
-		//NOTE 9
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note9_prise==false){
-			note9_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note9_prise == false){ctx.drawImage(note9,z3+385,310,30,44);}
+		// //NOTE 9
+		// if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note9_prise==false){
+		// 	note9_prise = true;
+		// 	compteur_note++;
+		// 	/*son_note.play(); mettre le son de récup de note*/}
+		// else if (note9_prise == false){ctx.drawImage(note9,z3+385,310,30,44);}
 
 		ctx.translate(x+16,y+32); 
 
-		if (!droite){ctx.scale(-1,1);}
-		else {ctx.scale(1,1);}
+		if (!droite)
+			ctx.scale(-1,1);
+		else
+		ctx.scale(1,1);
 
-		if (clavier.bas){ctx.drawImage(perso_obstacle,pas2*36,0,36,31,-16,-10,48,48);}
-		else {ctx.drawImage(perso,pas1*27,0,27,42,-16,-32,32,64);}
+		if (clavier.bas){
+			ctx.drawImage(perso_obstacle,pas2*36,0,36,31,-16,-10,48,48);
+		}
+		else {
+			ctx.drawImage(perso,pas1*27,0,27,42,-16,-32,32,64);
+		}
 
-		if (clavier.bas == true){clavier.haut = false;}
+		if (clavier.bas == true){
+			clavier.haut = false;
+		}
 
 		ctx.restore();
 	
