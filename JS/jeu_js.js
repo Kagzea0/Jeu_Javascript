@@ -137,9 +137,9 @@ window.onload = function(){
 			z3 = z3 + 6*coefDeZ;
 		}
 
-		if (clavier.haut && saut <=0)  //initialisation du saut
-		son_saut.play();
-		saut = 40; 
+		if (clavier.haut && saut <=0) { //initialisation du saut
+			son_saut.play();
+			saut = 40; }
 		
 		if (saut >= 0){
 			y =  300 + (saut-20)*(saut-20)/4-100;
