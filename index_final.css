@@ -13,8 +13,27 @@ body {
 	width: 800px;
 	height: 400px;
 	background: #FFF;
+	animation: flou 2s;
 }
 
 h1{
     text-align: center;
+	animation: flou 2s;
+}
+
+@keyframes flou {
+    from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+#hide_text{
+	color: #333;
+	font-size: 40px;
+	margin-top: -280px;
+	margin-left: 180px;
+	opacity: 0;
 }

@@ -5,10 +5,9 @@ window.onload = function(){
 
 	//Création des appels des variables des pour les différentes positions du jeu
 	var perso = new Image();
-	var perso1 = new Image();
+	var portail = new Image();
 
 	//Créations des variables notes
-	var note0 = new Image();
 	var note1 = new Image();
 	var note2 = new Image();
 	var note3 = new Image();
@@ -18,8 +17,8 @@ window.onload = function(){
 	var note7 = new Image();
 	var note8 = new Image();
 	var note9 = new Image();
-
 	var note10 = new Image();
+
 	var note11 = new Image();
 	var note12 = new Image();
 	var note13 = new Image();
@@ -29,6 +28,10 @@ window.onload = function(){
 	var note17 = new Image();
 	var note18 = new Image();
 	var note19 = new Image();
+	var note20 = new Image();
+
+	var son_saut = new Audio();
+	var son_note = new Audio();
 
 	//Création des variables pour les différents plan du jeu
 	var premierPlan = new Image();
@@ -37,12 +40,12 @@ window.onload = function(){
 
 	//Appel des fichiers correspondant aux noms des variables
 	perso.src = "Images/yoshi_marche.png";
+	portail.src = "Images/portal.png";
 	
 	premierPlan.src = "Images/PremierPlan.png";
 	secondPlan.src = "Images/SecondPlan.png";
 	arrierePlan.src = "Images/ArrierePlan.png";
 
-	note0.src = "Images/note.png";
 	note1.src = "Images/note.png"
 	note2.src = "Images/note.png"
 	note3.src = "Images/note.png"
@@ -52,8 +55,8 @@ window.onload = function(){
 	note7.src = "Images/note.png"
 	note8.src = "Images/note.png"
 	note9.src = "Images/note.png"
-
 	note10.src = "Images/note.png"
+
 	note11.src = "Images/note.png"
 	note12.src = "Images/note.png"
 	note13.src = "Images/note.png"
@@ -63,13 +66,17 @@ window.onload = function(){
 	note17.src = "Images/note.png"
 	note18.src = "Images/note.png"
 	note19.src = "Images/note.png"
+	note20.src = "Images/note.png";
+
+	son_note.src = "Son/son_note/mp3";
+	son_saut.src = "Son/son_saut.mp3";
 
 	//Créations de variables utiles au jeu
 	var compteur_note = 0;
 	var saut = 0;
 
 	a = 1;
-	var x = 200;
+	var x = 85;
 	var z1 = 0;
 	var z2 = 0;
 	var z3 = 0;
@@ -79,13 +86,13 @@ window.onload = function(){
 	var sol = y;
 	
 	var droite = true;
+
+	var portail_pris = false;
 	
 	//Pas pour régler la vitesse des 3 plans en parallaxe
 	var pas1 = 0 ;
-	var pas2 = 0 ;
 
 	//Variables des 20 notes à attraper dans le jeu
-	var note0_prise = false;
 	var note1_prise = false;
 	var note2_prise = false;
 	var note3_prise = false;
@@ -95,8 +102,8 @@ window.onload = function(){
 	var note7_prise = false;
 	var note8_prise = false;
 	var note9_prise = false;
-
 	var note10_prise = false;
+
 	var note11_prise = false;
 	var note12_prise = false;
 	var note13_prise = false;
@@ -106,6 +113,7 @@ window.onload = function(){
 	var note17_prise = false;
 	var note18_prise = false;
 	var note19_prise = false;
+	var note20_prise = false;
 	
 	premierPlan.onload = function(){
 		setInterval(boucle, 20); //framerate : 1000/20 soit 50 images par s.
@@ -130,6 +138,7 @@ window.onload = function(){
 		}
 
 		if (clavier.haut && saut <=0)  //initialisation du saut
+		son_saut.play();
 		saut = 40; 
 		
 		if (saut >= 0){
@@ -138,249 +147,233 @@ window.onload = function(){
 		}
 
 		//Les différents pas pour les spritessheets
-		if (pas1 > 4){
-			pas1 = 0;
+		if (pas1 > 4){pas1 = 0;}
+
+		ctx.save();  	
+
+		var hide_text = document.getElementById("hide_text");
+
+		if (compteur_note == 20){
+			hide_text.style.opacity = "1";
 		}
+		else {
+			//Mise en place de l'arrière plan ainsi que son parallaxe
+			ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
+			ctx.drawImage(arrierePlan,z1,0,1300,400);
+			ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
 
-		ctx.save();  		
-		
-		//Mise en place de l'arrière plan ainsi que son parallaxe
-		ctx.drawImage(arrierePlan,z1-1300,0,1300,400);
-		ctx.drawImage(arrierePlan,z1,0,1300,400);
-		ctx.drawImage(arrierePlan,z1+1300,0,1300,400);
+			if (z1>1300){z1=0;}
+			
+			if (z1<-1300){z1=0;}
 
-		if (z1>1300){
-			z1=0;
-		}
-		
-		if (z1<-1300){
-			z1=0;
-		}
+			//Mise en place du deuxième plan ainsi que son parallaxe
+			ctx.drawImage(secondPlan,z2-1430,60,1430,314);
+			ctx.drawImage(secondPlan,z2,60,1430,314);
+			ctx.drawImage(secondPlan,z2+1430,60,1430,314);
 
-		//Mise en place du deuxième plan ainsi que son parallaxe
-		ctx.drawImage(secondPlan,z2-1430,60,1430,314);
-		ctx.drawImage(secondPlan,z2,60,1430,314);
-		ctx.drawImage(secondPlan,z2+1430,60,1430,314);
+			if (z2>1430){z2=0;}
 
-		if (z2>1430){
-			z2=0;
-		}
+			if (z2<-1430){z2=0;}
 
-		if (z2<-1430){
-			z2=0;
-		}
+			//Mise en place du premier plan ainsi que son parallaxe
+			ctx.drawImage(premierPlan,z3-1820,0,1820,400);
+			ctx.drawImage(premierPlan,z3,0,1820,400);
+			ctx.drawImage(premierPlan,z3+1820,0,1820,400);
 
-		//Mise en place du premier plan ainsi que son parallaxe
-		ctx.drawImage(premierPlan,z3-1820,0,1820,400);
-		ctx.drawImage(premierPlan,z3,0,1820,400);
-		ctx.drawImage(premierPlan,z3+1820,0,1820,400);
+			if (z3>1820){z3=0;}
 
-		if (z3>1820){
-			z3=0;
-		}
-
-		if (z3<-1820){
-			z3=0;
+			if (z3<-1820){z3=0;}
 		}
 
 		//Fait apparaitre/disparaitre la note de musique et incrémente le compteur de notes
-
-		//NOTE 0
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note0_prise==false){
-			note0_prise = true;
-			compteur_note++;
-			document.getElementById("compteur_note").innerHTML = compteur_note;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note0_prise == false){ctx.drawImage(note0,z3+385,310,30,44);}
 		
-		//NOTE 1
-		if (z3+485<=x && z3+515>=x && y>=300 && y<=340 && note1_prise==false){
+		//NOTE 1 = BAS
+		if (z3+250<=x && z3+280>=x && y>=280 && y<=350 && note1_prise==false){
 			note1_prise = true;
 			compteur_note++;
 			document.getElementById("compteur_note").innerHTML = compteur_note;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note1_prise == false){ctx.drawImage(note1,z3+485,310,30,44);}
+			son_note.play();}
+		else if (note1_prise == false){ctx.drawImage(note1,z3+265,315,30,44);}
 
-		//NOTE 2
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note2_prise==false){
+		//NOTE 2 = HAUT
+		if (z3+430<=x && z3+460>=x && y>=200 && y<=270 && note2_prise==false){
 			note2_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note2_prise == false){ctx.drawImage(note2,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note2_prise == false){ctx.drawImage(note2,z3+445,235,30,44);}
 
-		//NOTE 3
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note3_prise==false){
+		//NOTE 3 = BAS
+		if (z3+610<=x && z3+640>=x && y>=280 && y<=350 && note3_prise==false){
 			note3_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note3_prise == false){ctx.drawImage(note3,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note3_prise == false){ctx.drawImage(note3,z3+625,315,30,44);}
 
-		//NOTE 4
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note4_prise==false){
+		//NOTE 4 = BAS
+		if (z3+790<=x && z3+820>=x && y>=280 && y<=350 && note4_prise==false){
 			note4_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note4_prise == false){ctx.drawImage(note4,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note4_prise == false){ctx.drawImage(note4,z3+805,315,30,44);}
 
-		//NOTE 5
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note5_prise==false){
+		//NOTE 5 = HAUT
+		if (z3+970<=x && z3+1000>=x && y>=200 && y<=270 && note5_prise==false){
 			note5_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note5_prise == false){ctx.drawImage(note5,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note5_prise == false){ctx.drawImage(note5,z3+985,235,30,44);}
 
-		//NOTE 6
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note6_prise==false){
+		//NOTE 6 = BAS
+		if (z3+1150<=x && z3+1180>=x && y>=280 && y<=350 && note6_prise==false){
 			note6_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note6_prise == false){ctx.drawImage(note6,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note6_prise == false){ctx.drawImage(note6,z3+1165,315,30,44);}
 
-		//NOTE 7
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note7_prise==false){
+		//NOTE 7 = HAUT
+		if (z3+1330<=x && z3+1360>=x && y>=200 && y<=270 && note7_prise==false){
 			note7_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note7_prise == false){ctx.drawImage(note7,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note7_prise == false){ctx.drawImage(note7,z3+1345,235,30,44);}
 
-		//NOTE 8
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note8_prise==false){
+		//NOTE 8 = HAUT
+		if (z3+1510<=x && z3+1540>=x && y>=200 && y<=270 && note8_prise==false){
 			note8_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note8_prise == false){ctx.drawImage(note8,z3+385,310,30,44);}
+			document.getElementById("compteur_note").innerHTML = compteur_note;
+			son_note.play();}
+		else if (note8_prise == false){ctx.drawImage(note8,z3+1525,235,30,44);}
 
-		//NOTE 9
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note9_prise==false){
+		//NOTE 9 = BAS
+		if (z3+1690<=x && z3+1720>=x && y>=280 && y<=350 && note9_prise==false){
 			note9_prise = true;
 			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note9_prise == false){ctx.drawImage(note9,z3+385,310,30,44);}
-
-		//NOTE 10
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note10_prise==false){
-			note10_prise = true;
-			compteur_note++;
 			document.getElementById("compteur_note").innerHTML = compteur_note;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note10_prise == false){ctx.drawImage(note10,z3+385,310,30,44);}
+			son_note.play();}
+		else if (note9_prise == false){ctx.drawImage(note9,z3+1705,315,30,44);}
 		
-		//NOTE 11
-		if (z3+485<=x && z3+515>=x && y>=300 && y<=340 && note11_prise==false){
-			note11_prise = true;
-			compteur_note++;
-			document.getElementById("compteur_note").innerHTML = compteur_note;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note11_prise == false){ctx.drawImage(note11,z3+485,310,30,44);}
+		console.log(compteur_note)
 
-		//NOTE 12
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note12_prise==false){
-			note12_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note12_prise == false){ctx.drawImage(note12,z3+385,310,30,44);}
+		if (z3+1740<=x && z3+1790 && y>=280 && y<=340 && portail_pris == false){
+			portail_pris = true;
+			console.log("portail_pris");
+		}
 
-		//NOTE 13
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note13_prise==false){
-			note13_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note13_prise == false){ctx.drawImage(note13,z3+385,310,30,44);}
+		else if (portail_pris == false){ctx.drawImage(portail,z3+1700,270,100,131)}
 
-		//NOTE 14
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note14_prise==false){
-			note14_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note14_prise == false){ctx.drawImage(note14,z3+385,310,30,44);}
+		// console.log("z3 = " + z3);
+		// console.log("z2 = " + z2);
+		// console.log("z1 = " + z1);
+		
+		if (compteur_note >=9 && portail_pris == true){
 
-		//NOTE 15
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note15_prise==false){
-			note15_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note15_prise == false){ctx.drawImage(note15,z3+385,310,30,44);}
+			x = 385;
 
-		//NOTE 16
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note16_prise==false){
-			note16_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note16_prise == false){ctx.drawImage(note16,z3+385,310,30,44);}
+			//NOTE 10 = HAUT
+			if (z3+250<=x && z3+280>=x && y>=200 && y<=270 && note10_prise==false){
+				note10_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note10_prise == false){ctx.drawImage(note10,z3+235,235,30,44);}
+		
+			//NOTE 11 = BAS
+			if (z3+430<=x && z3+460>=x && y>=280 && y<=350 && note11_prise==false){
+				note11_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note11_prise == false){ctx.drawImage(note11,z3+445,315,30,44);}
 
-		//NOTE 17
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note17_prise==false){
-			note17_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note17_prise == false){ctx.drawImage(note17,z3+385,310,30,44);}
+			//NOTE 12 = HAUT
+			if (z3+610<=x && z3+640>=x && y>=200 && y<=270 && note12_prise==false){
+				note12_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note12_prise == false){ctx.drawImage(note12,z3+625,235,30,44);}
 
-		//NOTE 18
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note18_prise==false){
-			note18_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note18_prise == false){ctx.drawImage(note18,z3+385,310,30,44);}
+			//NOTE 13 = HAUT
+			if (z3+790<=x && z3+820>=x && y>=200 && y<=270 && note13_prise==false){
+				note13_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note13_prise == false){ctx.drawImage(note13,z3+805,235,30,44);}
 
-		//NOTE 19
-		if (z3+385<=x && z3+415>=x && y>=300 && y<=340 && note19_prise==false){
-			note19_prise = true;
-			compteur_note++;
-			/*son_note.play(); mettre le son de récup de note*/}
-		else if (note19_prise == false){ctx.drawImage(note19,z3+385,310,30,44);}
+			//NOTE 14 = BAS
+			if (z3+970<=x && z3+1000>=x && y>=280 && y<=350 && note14_prise==false){
+				note14_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note14_prise == false){ctx.drawImage(note14,z3+985,315,30,44);}
+
+			//NOTE 15 = HAUT
+			if (z3+1150<=x && z3+1180>=x && y>=200 && y<=270 && note15_prise==false){
+				note15_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note15_prise == false){ctx.drawImage(note15,z3+1165,235,30,44);}
+
+			//NOTE 16 = BAS
+			if (z3+1330<=x && z3+1370>=x && y>=280 && y<=350 && note16_prise==false){
+				note16_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note16_prise == false){ctx.drawImage(note16,z3+1345,315,30,44);}
+
+			//NOTE 17 = BAS
+			if (z3+1510<=x && z3+1540>=x && y>=280 && y<=350 && note17_prise==false){
+				note17_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note17_prise == false){ctx.drawImage(note17,z3+1525,315,30,44);}
+
+			//NOTE 18 = HAUT
+			if (z3+1690<=x && z3+1720>=x && y>=200 && y<=270 && note18_prise==false){
+				note18_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note18_prise == false){ctx.drawImage(note18,z3+585,235,30,44);}
+
+			//NOTE 19 = BAS
+			if (z3+50<=x && z3+80>=x && y>=280 && y<=350 && note19_prise==false){
+				note19_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note19_prise == false){ctx.drawImage(note19,z3+65,315,30,44);}
+				
+			//NOTE 20 = HAUT
+			if (z3+50<=x && z3+80>=x && y>=200 && y<=270 && note20_prise==false){
+				note20_prise = true;
+				compteur_note++;
+				document.getElementById("compteur_note").innerHTML = compteur_note;
+				son_note.play();}
+			else if (note20_prise == false){ctx.drawImage(note20,z3+65,235,30,44);}
+		}
 
 		ctx.translate(x+16,y+32); 
 
-		if (!droite)
-			ctx.scale(-1,1);
-		else
-		ctx.scale(1,1);
+		if (!droite){ctx.scale(-1,1);}
+		else ctx.scale(1,1);
 
 		ctx.drawImage(perso,pas1*27,0,27,42,-16,-32,32,64);
 
-		if (clavier.bas == true){
-			clavier.haut = false;
-		}
+		if (clavier.bas == true){clavier.haut = false;}
 
 		ctx.restore();
-	
 	}
-
 }
-
-/*Contraintes du jeu (2022/2023)
-Vous devez créer un jeu en vous appuyant sur ce qui a été vu. Une correction vous est remise. 
-Votre jeu devra être vrendu samedi 7 janvier 2023 au plus tard et respecter les contraintes 
-suivantes :
-
-1. Le jeu doit être absolument basé sur ce qui a été vu en cours, je dois reconnaître la 
-structure de ce qui vous a été donné (setInterval, fonction boucle, ....).
-
-2. Le jeu ne doit pas se passer dans le monde de Mario : il faudra changer de fond et de 
-personnage ! Il faut utiliser les fonds faits avec M. Clech. Il doit donc y avoir plusieurs 
-couches de fond qui glissent à des vitesses différentes. Il faut utiliser une spritesheet. 
-Vous pouvez récupérer des images sur internet, vous n’êtes pas obligés de les créer. 
-Attention, certaines spritesheets disponibles sur internet sont mal conçues et poseront
-problèmes (les vignettes doivent être dans une grille avec des cases qui ont toutes la même 
-largeur et même hauteur).
-
-3. Votre jeu doit être hébergé sur o2switch (ou ailleurs d’ailleurs si vous avez un autre 
-hébergeur). Il faut rendre dans l’espace que je vais créer sur moodle un rapport pdf d’une 
-page ou deux expliquant de façon très générale ce que vous avez réussi à faire et pas réussi 
-à faire et dans lequel vous faites le bilan de votre travail. Il faut donner le lien où 
-tester le jeu.
-
-4. Il faudra utiliser des items que l’on peut prendre, et qui doivent avoir une incidence 
-sur le jeu : donner un pouvoir au personnage, constituer une partie d’un ensemble d’éléments 
-à rassembler dans le bon ordre, déclencher un son, changer une couleur ou un fond, etc... 
-Ces items doivent être soit des notes de musique soit les quatre éléments (terre, air, feu, 
-eau). Notez d’ailleurs que si vous le souhaitez votre jeu peut constituer une expérience
-artistique plus qu’un jeu avec un véritable but.
-
-Barême : non respect de la contrainte 1 : 
-Originalité sur 6
-Jouabilité/fonctionnement sur 6 (est-ce que le jeu est fluide, ne bloque pas à certains 
-endroits, est-ce qu’il est intéressant ...), 
-Avancement technique sur 8 (plus votre jeu met en oeuvre des concepts avancés plus la note 
-est proche de 8).
-*/
